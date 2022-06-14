@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: incidents-deployment-front
+  labels:
+    app: incidents-front
+spec:
+  selector:
+    matchLabels:
+      app: incidents-front
+  template:
+    metadata:
+      labels:
+        app: incidents-front
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
+      containers:
+        - name: incidents-front
+          image: ghcr.io/chazapp/incidents-front:1.0.1-arm
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: ghcr-creds
