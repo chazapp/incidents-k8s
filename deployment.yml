@@ -24,3 +24,71 @@ spec:
             - containerPort: 3000
       imagePullSecrets:
         - name: ghcr-creds
+
+---
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: incidents-deployment-api
+  labels:
+    app: incidents-api
+spec:
+  selector:
+    matchLabels:
+      app: incidents-api
+  template:
+    metadata:
+      labels:
+        app: incidents-api
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
+      containers:
+        - name: incidents-api
+          image: ghcr.io/chazapp/incidents-api:1.0.1-arm
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: ALLOWED_HOSTS
+              value: "incidents-api.chaz.pro"
+            - name: ALLOWED_ORIGINS
+              value: "incidents.chaz.pro"
+            - name: DEBUG
+              value: "False"
+            - name: PRODUCTION
+              value: "True"
+            - name: DB_HOST
+              value: postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: SECRET_KEY
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_NAME
+      imagePullSecrets:
+        - name: ghcr-creds
+      livenessProbe:
+        httpGet:
+          path: /health/
+          port: 8000
+          scheme: HTTP
+          httpHeaders:
+            - name: Host
+              value: incidents.chaz.pro
