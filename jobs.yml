@@ -12,6 +12,13 @@ spec:
           image: ghcr.io/chazapp/incidents-api:1.0.2-arm
           command: ["python", "manage.py", "migrate"]
           env:
+            - name: ALLOWED_HOSTS
+              value: "incidents-api.chaz.pro"
+            - name: ALLOWED_ORIGINS
+              value: "incidents.chaz.pro"
+            - name: DEBUG
+              value: "False"
+            - name: PRODUCTION
             - name: DB_HOST
               value: postgres
             - name: DB_PORT
