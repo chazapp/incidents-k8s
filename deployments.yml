@@ -30,7 +30,7 @@ spec:
         - name: ghcr-creds
 
 ---
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: incidents-deployment-api
@@ -98,7 +98,7 @@ spec:
         - name: ghcr-creds
 
 ---
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: incidents-deployment-db
