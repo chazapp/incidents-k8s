@@ -129,9 +129,10 @@ spec:
             timeoutSeconds: 1
           env:
             - name: POSTGRES_USER
-              secretKeyRef:
-                name: incidents-api-secret
-                key: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
