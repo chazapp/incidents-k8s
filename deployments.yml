@@ -116,8 +116,8 @@ spec:
       nodeSelector:
         kubernetes.io/arch: arm64
       containers:
-        - name: incidents-db
-          image: postgres:14.12
+        - name: postgres
+          image: postgres:14.0-alpine
           imagePullPolicy: Always
           ports:
             - containerPort: 5432
