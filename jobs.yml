@@ -30,4 +30,6 @@ spec:
                   name: incidents-api-secret
                   key: DB_NAME
       restartPolicy: Never
+      imagePullSecrets:
+        - name: ghcr-creds
   backoffLimit: 1
