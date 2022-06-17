@@ -5,6 +5,8 @@ metadata:
 spec:
   template:
     spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: migrations
           image: ghcr.io/chazapp/incidents-api:1.0.2-arm
