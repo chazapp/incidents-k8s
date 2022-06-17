@@ -43,6 +43,16 @@ spec:
                 secretKeyRef:
                   name: incidents-api-secret
                   key: DB_NAME
+            - name: ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: ADMIN_EMAIL
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: ADMIN_PASSWORD
       restartPolicy: Never
       imagePullSecrets:
         - name: ghcr-creds
