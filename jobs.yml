@@ -12,6 +12,11 @@ spec:
           image: ghcr.io/chazapp/incidents-api:1.0.2-arm
           command: ["python", "manage.py", "migrate"]
           env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: SECRET_KEY
             - name: ALLOWED_HOSTS
               value: "incidents-api.chaz.pro"
             - name: ALLOWED_ORIGINS
