@@ -1,5 +1,5 @@
 resources:
-  - deployment.yml
+  - deployments.yml
   - ingress.yml
   - services.yml
 
