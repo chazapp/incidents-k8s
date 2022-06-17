@@ -65,7 +65,7 @@ spec:
             - name: ALLOWED_HOSTS
               value: "incidents-api.chaz.pro"
             - name: ALLOWED_ORIGINS
-              value: "incidents.chaz.pro"
+              value: "https://incidents.chaz.pro"
             - name: DEBUG
               value: "False"
             - name: PRODUCTION
