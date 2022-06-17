@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: migrations
-          image: ghcr.io/chazapp/incidents-api:1.0.1-arm
+          image: ghcr.io/chazapp/incidents-api:1.0.2-arm
           command: ["python", "manage.py", "migrate"]
           env:
             - name: DB_HOST
