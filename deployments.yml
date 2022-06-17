@@ -22,12 +22,12 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
       imagePullSecrets:
         - name: ghcr-creds
-      livenessProbe:
-        httpGet:
-          path: /health/
-          port: 8000
 
 ---
 apiVersion: v1
@@ -53,6 +53,14 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+              scheme: HTTP
+              httpHeaders:
+                - name: Host
+                  value: incidents-api.chaz.pro
           env:
             - name: ALLOWED_HOSTS
               value: "incidents-api.chaz.pro"
@@ -88,14 +96,6 @@ spec:
                   key: DB_NAME
       imagePullSecrets:
         - name: ghcr-creds
-      livenessProbe:
-        httpGet:
-          path: /health/
-          port: 8000
-          scheme: HTTP
-          httpHeaders:
-            - name: Host
-              value: incidents-api.chaz.pro
 
 ---
 apiVersion: v1
@@ -121,6 +121,12 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 5432
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 2
+            periodSeconds: 2
+            timeoutSeconds: 1
           env:
             - name: POSTGRES_USER
               secretKeyRef:
@@ -140,12 +146,6 @@ spec:
             - name: incidents-db-data
               mountPath: /var/lib/postgresql/data
               subPath: postgres
-        livenessProbe:
-          tcpSocket:
-            port: 5432
-          initialDelaySeconds: 2
-          periodSeconds: 2
-          timeoutSeconds: 1
       volumes:
         - name: incidents-db-data
           persistentVolumeClaim:
