@@ -9,7 +9,7 @@ spec:
         kubernetes.io/arch: arm64
       containers:
         - name: migrations
-          image: ghcr.io/chazapp/incidents-api:1.0.2-arm
+          image: ghcr.io/chazapp/incidents-api:1.0.4-arm
           command: ["python", "manage.py", "migrate"]
           env:
             - name: SECRET_KEY
