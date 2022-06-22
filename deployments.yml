@@ -63,11 +63,11 @@ spec:
                   value: incidents-api.chaz.pro
           env:
             - name: ALLOWED_HOSTS
-              value: "incidents-api.chaz.pro"
+              value: "incidents-api.chaz.pro,incidents-api-service.chaz.svc.cluster.local"
             - name: ALLOWED_ORIGINS
-              value: "https://incidents.chaz.pro"
+              value: "https://incidents.chaz.pro,http://localhost:3000"
             - name: DEBUG
-              value: "False"
+              value: "True"
             - name: PRODUCTION
               value: "True"
             - name: DB_HOST

@@ -1,5 +1,5 @@
 apiVersion: batch/v1
-kind: Job
+65;6203;1ckind: Job
 metadata:
   name: migration-job
 spec:
@@ -9,7 +9,7 @@ spec:
         kubernetes.io/arch: arm64
       containers:
         - name: migrations
-          image: ghcr.io/chazapp/incidents-api:1.0.4-arm
+          image: ghcr.io/chazapp/incidents-api:1.0.6-arm
           command: ["python", "manage.py", "migrate"]
           env:
             - name: SECRET_KEY
