@@ -18,7 +18,7 @@ spec:
         kubernetes.io/arch: arm64
       containers:
         - name: incidents-front
-          image: ghcr.io/chazapp/incidents-front:1.0.2-arm
+          image: ghcr.io/chazapp/incidents-front:1.0.3-arm
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
@@ -49,7 +49,7 @@ spec:
         kubernetes.io/arch: arm64
       containers:
         - name: incidents-api
-          image: ghcr.io/chazapp/incidents-api:1.0.5-arm
+          image: ghcr.io/chazapp/incidents-api:1.0.6-arm
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
