@@ -11,5 +11,6 @@ jobs:
       - uses: bridgecrewio/checkov-action@v3
         with:
           directory: .
-
-      
+          soft_fail: true
+          quiet: true
+          
