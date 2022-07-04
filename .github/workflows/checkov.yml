@@ -1,0 +1,15 @@
+---
+name: Checkov
+on:
+  push:
+
+jobs:
+  checkov:
+    runs-on: ubuntu
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bridgecrewio/checkov-action@v3
+        with:
+          directory: .
+
+      
