@@ -1,0 +1,196 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: incidents
+  name: incidents-deployment-front
+  labels:
+    app: incidents-front
+spec:
+  selector:
+    matchLabels:
+      app: incidents-front
+  template:
+    metadata:
+      labels:
+        app: incidents-front
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
+      containers:
+        - name: incidents-front
+          image: ghcr.io/chazapp/incidents-front:1.0.4-arm
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "1024Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: 3000
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: 3000
+      imagePullSecrets:
+        - name: ghcr-creds
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: incidents
+  name: incidents-deployment-api
+  labels:
+    app: incidents-api
+spec:
+  selector:
+    matchLabels:
+      app: incidents-api
+  template:
+    metadata:
+      labels:
+        app: incidents-api
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
+      containers:
+        - name: incidents-api
+          image: ghcr.io/chazapp/incidents-api:1.0.7-arm
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "1024Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+              scheme: HTTP
+              httpHeaders:
+                - name: Host
+                  value: incidents-api.chaz.pro
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+              scheme: HTTP
+              httpHeaders:
+                - name: Host
+                  value: incidents-api.chaz.pro
+          env:
+            - name: ALLOWED_HOSTS
+              value: "incidents-api.chaz.pro,incidents-api-service.chaz.svc.cluster.local"
+            - name: ALLOWED_ORIGINS
+              value: "https://incidents.chaz.pro,http://localhost:3000"
+            - name: DEBUG
+              value: "False"
+            - name: PRODUCTION
+              value: "True"
+            - name: DB_HOST
+              value: postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: SECRET_KEY
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_NAME
+      imagePullSecrets:
+        - name: ghcr-creds
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: incidents-deployment-db
+  namespace: incidents
+  labels:
+    app: incidents-db
+spec:
+  selector:
+    matchLabels:
+      app: incidents-db
+  template:
+    metadata:
+      labels:
+        app: incidents-db
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
+      containers:
+        - name: postgres
+          image: postgres:14.0-alpine
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "1024Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 5432
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 2
+            periodSeconds: 2
+            timeoutSeconds: 1
+          readinessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 2
+            periodSeconds: 2
+            timeoutSeconds: 1
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_NAME
+          volumeMounts:
+            - name: incidents-db-data
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+      volumes:
+        - name: incidents-db-data
+          persistentVolumeClaim:
+            claimName: incidents-db-pvc
+          

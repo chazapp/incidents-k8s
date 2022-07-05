@@ -1,0 +1,49 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: incidents-front
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  rules:
+    - host: incidents.chaz.pro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: incidents-front-service
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - incidents.chaz.pro
+      secretName: incidents-front-tls-secret
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: incidents-api
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  rules:
+    - host: incidents-api.chaz.pro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: incidents-api-service
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - incidents-api.chaz.pro
+      secretName: incidents-api-tls-secret

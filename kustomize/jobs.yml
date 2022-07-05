@@ -1,0 +1,59 @@
+apiVersion: batch/v1
+65;6203;1ckind: Job
+metadata:
+  name: migration-job
+spec:
+  template:
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
+      containers:
+        - name: migrations
+          image: ghcr.io/chazapp/incidents-api:1.0.6-arm
+          command: ["python", "manage.py", "migrate"]
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: SECRET_KEY
+            - name: ALLOWED_HOSTS
+              value: "incidents-api.chaz.pro"
+            - name: ALLOWED_ORIGINS
+              value: "https://incidents.chaz.pro"
+            - name: DEBUG
+              value: "False"
+            - name: PRODUCTION
+            - name: DB_HOST
+              value: postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: DB_NAME
+            - name: ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: ADMIN_EMAIL
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: incidents-api-secret
+                  key: ADMIN_PASSWORD
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: ghcr-creds
+  backoffLimit: 1
