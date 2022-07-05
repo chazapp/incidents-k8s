@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: incidents
+  namespace: chaz
   name: incidents-deployment-front
   labels:
     app: incidents-front
@@ -45,7 +45,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: incidents
+  namespace: chaz
   name: incidents-deployment-api
   labels:
     app: incidents-api
@@ -130,7 +130,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: incidents-deployment-db
-  namespace: incidents
+  namespace: chaz
   labels:
     app: incidents-db
 spec:
