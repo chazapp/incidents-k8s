@@ -93,6 +93,10 @@ spec:
               httpHeaders:
                 - name: Host
                   value: incidents-api.chaz.pro
+          securityContext:
+            runAsUser: 10000
+            runAsGroup: 10000
+            allowPrivilegeEscalation: false
           env:
             - name: ALLOWED_HOSTS
               value: "incidents-api.chaz.pro,incidents-api-service.chaz.svc.cluster.local"
