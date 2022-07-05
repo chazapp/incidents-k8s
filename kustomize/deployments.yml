@@ -28,6 +28,10 @@ spec:
             limits:
               memory: "1024Mi"
               cpu: "250m"
+          securityContext:
+            runAsUser: 10000
+            runAsGroup: 10000
+            allowPrivilegeEscalation: false
           ports:
             - containerPort: 3000
           livenessProbe:
@@ -147,6 +151,7 @@ spec:
       containers:
         - name: postgres
           image: postgres:14.0-alpine
+
           imagePullPolicy: Always
           resources:
             requests:
