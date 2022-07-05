@@ -6,8 +6,6 @@ metadata:
   name: incidents-deployment-front
   labels:
     app: incidents-front
-  annotations:
-    seccomp.security.alpha.kubernetes.io/pod: runtime/default
 spec:
   selector:
     matchLabels:
@@ -55,8 +53,6 @@ metadata:
   name: incidents-deployment-api
   labels:
     app: incidents-api
-  annotations:
-    seccomp.security.alpha.kubernetes.io/pod: runtime/default
 spec:
   selector:
     matchLabels:
@@ -145,8 +141,6 @@ metadata:
   namespace: chaz
   labels:
     app: incidents-db
-  annotations:
-    seccomp.security.alpha.kubernetes.io/pod: runtime/default
 spec:
   selector:
     matchLabels:
