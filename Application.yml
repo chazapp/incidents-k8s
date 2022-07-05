@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/chazapp/incidents-k8s
     targetRevision: HEAD
-    path: .
+    path: ./kustomize/
   destination:
     server: https://kubernetes.default.svc
     namespace: chaz
