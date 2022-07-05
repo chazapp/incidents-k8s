@@ -6,6 +6,8 @@ metadata:
   name: incidents-deployment-front
   labels:
     app: incidents-front
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: runtime/default
 spec:
   selector:
     matchLabels:
@@ -53,6 +55,8 @@ metadata:
   name: incidents-deployment-api
   labels:
     app: incidents-api
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: runtime/default
 spec:
   selector:
     matchLabels:
@@ -93,10 +97,10 @@ spec:
               httpHeaders:
                 - name: Host
                   value: incidents-api.chaz.pro
-          securityContext:
-            runAsUser: 10000
-            runAsGroup: 10000
-            allowPrivilegeEscalation: false
+            securityContext:
+              runAsUser: 10000
+              runAsGroup: 10000
+              allowPrivilegeEscalation: false
           env:
             - name: ALLOWED_HOSTS
               value: "incidents-api.chaz.pro,incidents-api-service.chaz.svc.cluster.local"
@@ -141,6 +145,8 @@ metadata:
   namespace: chaz
   labels:
     app: incidents-db
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: runtime/default
 spec:
   selector:
     matchLabels:
