@@ -2,6 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: chaz
   name: incidents-front-service
 spec:
   type: NodePort
@@ -16,6 +17,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: chaz
   name: incidents-api-service
 spec:
   type: NodePort
@@ -31,6 +33,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: chaz
   name: postgres
 spec:
   type: ClusterIP

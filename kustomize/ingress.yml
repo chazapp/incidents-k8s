@@ -2,6 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  namespace: chaz
   name: incidents-front
   annotations:
     kubernetes.io/ingress.class: "nginx"
@@ -27,6 +28,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  namespace: chaz
   name: incidents-api
   annotations:
     kubernetes.io/ingress.class: "nginx"
