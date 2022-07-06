@@ -19,7 +19,7 @@ spec:
         kubernetes.io/arch: arm64
       containers:
         - name: incidents-front
-          image: ghcr.io/chazapp/incidents-front:1.0.4-arm
+          image: ghcr.io/chazapp/incidents-front:1.0.5-arm
           imagePullPolicy: Always
           resources:
             requests:
