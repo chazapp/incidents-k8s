@@ -2,5 +2,4 @@ resources:
   - deployments.yml
   - ingress.yml
   - services.yml
-
-
+  - hpa.yml
