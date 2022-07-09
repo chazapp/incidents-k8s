@@ -38,12 +38,12 @@ spec:
             httpGet:
               path: /health/
               port: 3000
-              timeoutSeconds: 5
+            timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /health/
               port: 3000
-              timeoutSeconds: 5
+            timeoutSeconds: 5
       imagePullSecrets:
         - name: ghcr-creds
 
@@ -80,21 +80,22 @@ spec:
           ports:
             - containerPort: 8000
           livenessProbe:
+            timeoutSeconds: 5
             httpGet:
               path: /health/
               port: 8000
               scheme: HTTP
-              timeoutSeconds: 5
               httpHeaders:
                 - name: Host
                   value: incidents-api.chaz.pro
               
           readinessProbe:
+            timeoutSeconds: 5
             httpGet:
               path: /health/
               port: 8000
               scheme: HTTP
-              timeoutSeconds: 5
+            
               httpHeaders:
                 - name: Host
                   value: incidents-api.chaz.pro
