@@ -38,10 +38,12 @@ spec:
             httpGet:
               path: /health/
               port: 3000
+              timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /health/
               port: 3000
+              timeoutSeconds: 5
       imagePullSecrets:
         - name: ghcr-creds
 
@@ -85,6 +87,7 @@ spec:
               httpHeaders:
                 - name: Host
                   value: incidents-api.chaz.pro
+                  timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /health/
@@ -93,6 +96,7 @@ spec:
               httpHeaders:
                 - name: Host
                   value: incidents-api.chaz.pro
+              timeoutSeconds: 5
           env:
             - name: ALLOWED_HOSTS
               value: "incidents-api.chaz.pro,incidents-api-service.chaz.svc.cluster.local"
@@ -167,13 +171,13 @@ spec:
               port: 5432
             initialDelaySeconds: 2
             periodSeconds: 2
-            timeoutSeconds: 1
+            timeoutSeconds: 5
           readinessProbe:
             tcpSocket:
               port: 5432
             initialDelaySeconds: 2
             periodSeconds: 2
-            timeoutSeconds: 1
+            timeoutSeconds: 5
           env:
             - name: POSTGRES_USER
               valueFrom:
