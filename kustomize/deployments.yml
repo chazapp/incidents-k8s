@@ -84,19 +84,20 @@ spec:
               path: /health/
               port: 8000
               scheme: HTTP
+              timeoutSeconds: 5
               httpHeaders:
                 - name: Host
                   value: incidents-api.chaz.pro
-                  timeoutSeconds: 5
+              
           readinessProbe:
             httpGet:
               path: /health/
               port: 8000
               scheme: HTTP
+              timeoutSeconds: 5
               httpHeaders:
                 - name: Host
                   value: incidents-api.chaz.pro
-              timeoutSeconds: 5
           env:
             - name: ALLOWED_HOSTS
               value: "incidents-api.chaz.pro,incidents-api-service.chaz.svc.cluster.local"
