@@ -16,3 +16,17 @@ spec:
       target:
         type: Utilization
         averageUtilization: 50
+ behavior:
+  scaledDown:
+    stabilizationWindowSeconds: 120 #how long to wait before reevaluating and triggering a scaledown event
+    policies:
+      - type: pods #You c. an scale based on pods, or percent
+        value: 1
+  scaleUp:
+    stabilizationWindowSeconds: 60 
+    policies:
+      - type: pods
+        value: 2
+        periodSeconds: 35 # resource utilization metric must hold true for this long
+        
+      
