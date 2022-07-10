@@ -25,9 +25,6 @@ spec:
             requests:
               memory: "1024Mi"
               cpu: "250m"
-            limits:
-              memory: "1024Mi"
-              cpu: "250m"
           securityContext:
             runAsUser: 10000
             runAsGroup: 10000
@@ -72,9 +69,6 @@ spec:
           imagePullPolicy: Always
           resources:
             requests:
-              memory: "1024Mi"
-              cpu: "250m"
-            limits:
               memory: "1024Mi"
               cpu: "250m"
           ports:
@@ -161,9 +155,6 @@ spec:
           imagePullPolicy: Always
           resources:
             requests:
-              memory: "1024Mi"
-              cpu: "250m"
-            limits:
               memory: "1024Mi"
               cpu: "250m"
           ports:
