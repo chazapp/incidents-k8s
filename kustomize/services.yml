@@ -22,7 +22,7 @@ metadata:
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/path: "/metrics/"
-    prometheus.io/host: "incidents-api.chaz.pro"
+    prometheus.io/hostname: "incidents-api.chaz.pro"
 spec:
   type: NodePort
   selector:
