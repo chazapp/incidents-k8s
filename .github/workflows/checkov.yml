@@ -9,6 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bridgecrewio/checkov-action@v12
+        continue-on-error: true
         with:
           directory: .
           quiet: true
