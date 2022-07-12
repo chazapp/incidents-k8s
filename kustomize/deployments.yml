@@ -91,7 +91,7 @@ spec:
                   value: incidents-api.chaz.pro
           env:
             - name: ALLOWED_HOSTS
-              value: "incidents-api.chaz.pro,incidents-api-service.chaz.svc.cluster.local"
+              value: "*"
             - name: ALLOWED_ORIGINS
               value: "https://incidents.chaz.pro,http://localhost:3000"
             - name: DEBUG
