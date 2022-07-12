@@ -19,6 +19,11 @@ kind: Service
 metadata:
   namespace: chaz
   name: incidents-api-service
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "80"
+    prometheus.io/path: "/metrics/"
+    prometheus.io/host: "incidents-api.chaz.pro"
 spec:
   type: NodePort
   selector:
