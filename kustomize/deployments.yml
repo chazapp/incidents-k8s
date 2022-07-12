@@ -50,11 +50,6 @@ metadata:
   name: incidents-deployment-api
   labels:
     app: incidents-api
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "8000"
-    prometheus.io/path: "/metrics"
-    prometheus.io/host: "incidents-api.chaz.pro"
 spec:
   selector:
     matchLabels:
@@ -63,6 +58,11 @@ spec:
     metadata:
       labels:
         app: incidents-api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+        prometheus.io/host: "incidents-api.chaz.pro"
     spec:
       containers:
         - name: incidents-api
