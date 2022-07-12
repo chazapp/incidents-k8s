@@ -19,10 +19,6 @@ kind: Service
 metadata:
   namespace: chaz
   name: incidents-api-service
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/path: "/metrics/"
-    prometheus.io/hostname: "incidents-api.chaz.pro"
 spec:
   type: NodePort
   selector:
