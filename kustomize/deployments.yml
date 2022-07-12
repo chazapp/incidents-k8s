@@ -15,15 +15,13 @@ spec:
       labels:
         app: incidents-front
     spec:
-      nodeSelector:
-        kubernetes.io/arch: arm64
       containers:
         - name: incidents-front
-          image: ghcr.io/chazapp/incidents-front:1.0.6-arm
+          image: ghcr.io/chazapp/incidents-front:1.0.7
           imagePullPolicy: Always
           resources:
             requests:
-              memory: "1024Mi"
+              memory: "512Mi"
               cpu: "250m"
           securityContext:
             runAsUser: 10000
@@ -52,6 +50,11 @@ metadata:
   name: incidents-deployment-api
   labels:
     app: incidents-api
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8000"
+    prometheus.io/path: "/metrics"
+    prometheus.io/host: "incidents-api.chaz.pro"
 spec:
   selector:
     matchLabels:
@@ -61,15 +64,13 @@ spec:
       labels:
         app: incidents-api
     spec:
-      nodeSelector:
-        kubernetes.io/arch: arm64
       containers:
         - name: incidents-api
-          image: ghcr.io/chazapp/incidents-api:1.0.9-arm
+          image: ghcr.io/chazapp/incidents-api:1.0.11
           imagePullPolicy: Always
           resources:
             requests:
-              memory: "1024Mi"
+              memory: "512Mi"
               cpu: "250m"
           ports:
             - containerPort: 8000
@@ -146,8 +147,6 @@ spec:
       labels:
         app: incidents-db
     spec:
-      nodeSelector:
-        kubernetes.io/arch: arm64
       containers:
         - name: postgres
           image: postgres:14.0-alpine
