@@ -16,6 +16,13 @@ const getCsrfToken = () => {
     return csrfToken;
 }
 
+
+// This k6 script will loadtest the Incidents API. It will do the following:
+// 1. Login to the API
+// 2. Get a list of all incidents
+// 3. Create an incident
+// 4. Delete the incident
+
 export default function() {
     let csrfToken = getCsrfToken();
     // authenticate to API
