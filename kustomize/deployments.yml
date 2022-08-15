@@ -31,13 +31,13 @@ spec:
             - containerPort: 80
           livenessProbe:
             httpGet:
-              path: /health/
-              port: 3000
+              path: /
+              port: 80
             timeoutSeconds: 5
           readinessProbe:
             httpGet:
-              path: /health/
-              port: 3000
+              path: /
+              port: 80
             timeoutSeconds: 5
       imagePullSecrets:
         - name: ghcr-creds
