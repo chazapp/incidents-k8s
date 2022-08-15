@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: incidents-front
-          image: ghcr.io/chazapp/incidents-front:1.1.0
+          image: ghcr.io/chazapp/incidents-front:1.1.1
           imagePullPolicy: Always
           resources:
             requests:
@@ -29,12 +29,12 @@ spec:
             - containerPort: 80
           livenessProbe:
             httpGet:
-              path: /index.html
+              path: /health
               port: 80
             timeoutSeconds: 5
           readinessProbe:
             httpGet:
-              path: /index.html
+              path: /health
               port: 80
             timeoutSeconds: 5
       imagePullSecrets:
