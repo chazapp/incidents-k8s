@@ -24,19 +24,17 @@ spec:
               memory: "512Mi"
               cpu: "250m"
           securityContext:
-            runAsUser: 10000
-            runAsGroup: 10000
             allowPrivilegeEscalation: false
           ports:
             - containerPort: 80
           livenessProbe:
             httpGet:
-              path: /
+              path: /index.html
               port: 80
             timeoutSeconds: 5
           readinessProbe:
             httpGet:
-              path: /
+              path: /index.html
               port: 80
             timeoutSeconds: 5
       imagePullSecrets:
