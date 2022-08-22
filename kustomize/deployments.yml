@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: incidents-front
-          image: ghcr.io/chazapp/incidents-front:1.2.0
+          image: ghcr.io/chazapp/incidents-front:1.2.1
           imagePullPolicy: Always
           resources:
             requests:
