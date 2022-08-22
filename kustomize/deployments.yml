@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: incidents-front
-          image: ghcr.io/chazapp/incidents-front:1.1.2
+          image: ghcr.io/chazapp/incidents-front:1.2.0
           imagePullPolicy: Always
           resources:
             requests:
@@ -37,6 +37,14 @@ spec:
               path: /health
               port: 80
             timeoutSeconds: 5
+          volumeMounts:
+            - name: env.js
+              mountPath: /usr/share/nginx/html/env.js
+              subPath: env.js
+      volumes:
+        - name: env.js
+          configMap:
+            name: incidents-front-cm
       imagePullSecrets:
         - name: ghcr-creds
 

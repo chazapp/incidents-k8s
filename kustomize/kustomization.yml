@@ -3,3 +3,4 @@ resources:
   - ingress.yml
   - services.yml
   - hpa.yml
+  - cm-front.yml
