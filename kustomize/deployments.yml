@@ -38,11 +38,11 @@ spec:
               port: 80
             timeoutSeconds: 5
           volumeMounts:
-            - name: env.js
+            - name: env-js
               mountPath: /usr/share/nginx/html/env.js
               subPath: env.js
       volumes:
-        - name: env.js
+        - name: env-js
           configMap:
             name: incidents-front-cm
       imagePullSecrets:
