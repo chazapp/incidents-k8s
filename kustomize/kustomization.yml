@@ -4,3 +4,4 @@ resources:
   - services.yml
   - hpa.yml
   - cm-front.yml
+  - instrumentation.yml
