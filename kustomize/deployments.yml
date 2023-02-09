@@ -64,6 +64,8 @@ spec:
     metadata:
       labels:
         app: incidents-api
+      annotations:
+        instrumentation.opentelemetry.io/inject-python: "true"
     spec:
       containers:
         - name: incidents-api
