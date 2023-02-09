@@ -67,7 +67,7 @@ spec:
     spec:
       containers:
         - name: incidents-api
-          image: ghcr.io/chazapp/incidents-api:1.0.12
+          image: ghcr.io/chazapp/incidents-api:1.2.0
           imagePullPolicy: Always
           resources:
             requests:
