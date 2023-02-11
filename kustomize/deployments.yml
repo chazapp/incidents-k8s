@@ -65,11 +65,11 @@ spec:
       labels:
         app: incidents-api
       annotations:
-        #instrumentation.opentelemetry.io/inject-python: "true"
+        instrumentation.opentelemetry.io/inject-python: "true"
     spec:
       containers:
         - name: incidents-api
-          image: ghcr.io/chazapp/incidents-api:1.2.0
+          image: ghcr.io/chazapp/incidents-api:1.2.2
           imagePullPolicy: Always
           resources:
             requests:

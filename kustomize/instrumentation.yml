@@ -5,7 +5,7 @@ metadata:
   namespace: chaz
 spec:
   exporter:
-    endpoint: http://otel-collector.monitoring:4317
+    endpoint: http://tempo.monitoring:4317
   propagators:
     - tracecontext
     - baggage
@@ -19,4 +19,7 @@ spec:
       # Python autoinstrumentation uses http/proto by default
       # so data must be sent to 4318 instead of 4137.
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://otel-collector.monitoring:4318
+        value: http://tempo.monitoring:4318
+      - name: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+        value: 'http/protobuf'
+    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python:latest
