@@ -67,6 +67,8 @@ spec:
       annotations:
         instrumentation.opentelemetry.io/inject-python: "true"
     spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: incidents-api
           image: ghcr.io/chazapp/incidents-api:1.2.2
