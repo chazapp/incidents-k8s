@@ -65,7 +65,7 @@ spec:
       labels:
         app: incidents-api
       annotations:
-        instrumentation.opentelemetry.io/inject-python: "true"
+        #instrumentation.opentelemetry.io/inject-python: "true"
     spec:
       nodeSelector:
         kubernetes.io/arch: arm64
