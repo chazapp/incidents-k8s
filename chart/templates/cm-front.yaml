@@ -1,0 +1,11 @@
+{{ if .Values.front.enabled }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-front-cm
+data:
+  env.js: |
+    window.env = {
+        API_URL: "{{ .Values.front.config.apiUrl }}"
+    }
+{{- end }}

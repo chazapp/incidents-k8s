@@ -1,4 +1,43 @@
-ingress:
+api:
   enabled: true
-  className: nginx
-  hosts:
+  image: ghcr.io/chazapp/incidents-api:1.2.2
+  config:
+    allowedHosts: "incidents-api.local,incidents-api-service.chaz.svc.cluster.local"
+    allowedOrigins: "https://incidents.local,http://localhost:3000"
+    debug: "False"
+    production: "True"
+    dbHost: "postgres"
+    dbPort: "5432"
+    dbPassword: foobarfoobar
+    secretKey: foobar
+    adminEmail: shad@chaz.pro
+    adminPassword: foobarfoobar
+  ingress:
+    enabled: true
+    annotations: {}
+    path: /
+    pathType: Prefix
+    hosts:
+      - incidents-api.local
+    tls:
+      - hosts:
+          - incidents.local
+        secretName: incidents-api-tls-secret
+
+
+front:
+  enabled: true
+  image: ghcr.io/chazapp/incidents-front:1.2.1
+  config:
+    apiUrl: "https://incidents-api.local"
+  ingress:
+    enabled: true
+    annotations: {}
+    path: /
+    pathType: Prefix
+    hosts:
+      - incidents.local
+    tls:
+      - hosts:
+          - incidents.local
+        secretName: incidents-front-tls-secret

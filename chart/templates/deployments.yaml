@@ -1,0 +1,189 @@
+{{- if .Values.front.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-front
+  labels:
+    app: {{ .Release.Name }}-front
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-front
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-front
+    spec:
+      containers:
+        - name: incidents-front
+          image: {{ .Values.front.image }}
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: env-js
+              mountPath: /usr/share/nginx/html/env.js
+              subPath: env.js
+      volumes:
+        - name: env-js
+          configMap:
+            name: {{ .Release.Name }}-front-cm
+{{- end }}
+
+{{ if .Values.api.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api
+  labels:
+    app: {{ .Release.Name }}-api
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-api
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-api
+    spec:
+      containers:
+        - name: incidents-api
+          image: {{ .Values.api.image }}
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 8000
+          livenessProbe:
+            timeoutSeconds: 5
+            httpGet:
+              path: /health/
+              port: 8000
+              scheme: HTTP
+              httpHeaders:
+                - name: Host
+                  value: incidents-api.local
+              
+          readinessProbe:
+            timeoutSeconds: 5
+            httpGet:
+              path: /health/
+              port: 8000
+              scheme: HTTP
+            
+              httpHeaders:
+                - name: Host
+                  value: incidents-api.local
+          env:
+            - name: ALLOWED_HOSTS
+              value: {{ .Values.api.config.allowedHosts }}
+            - name: ALLOWED_ORIGINS
+              value: {{ .Values.api.config.allowedOrigins }}
+            - name: DEBUG
+              value: "{{ .Values.api.config.debug }}"
+            - name: PRODUCTION
+              value: "{{ .Values.api.config.production }}"
+            - name: DB_HOST
+              value: postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api-secret
+                  key: SECRET_KEY
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api-secret
+                  key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api-secret
+                  key: DB_NAME
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name}}-db
+  labels:
+    app: {{ .Release.Name}}-db
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name}}-db
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name}}-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:14.0-alpine
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "1024Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 5432
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 2
+            periodSeconds: 2
+            timeoutSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 2
+            periodSeconds: 2
+            timeoutSeconds: 5
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name}}-api-secret
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name}}-api-secret
+                  key: DB_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name}}-api-secret
+                  key: DB_NAME
+          volumeMounts:
+            - name: {{ .Release.Name}}-db-data
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+      volumes:
+        - name: {{ .Release.Name}}-db-data
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name}}-db
+{{- end }}

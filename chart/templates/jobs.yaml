@@ -1,0 +1,62 @@
+{{ if .Values.api.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name}}-migration-job
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: migrations
+          image: {{ .Values.api.image }}
+          command: ["python", "manage.py", "migrate"]
+          env:
+            - name: ALLOWED_HOSTS
+              value: {{ .Values.api.config.allowedHosts }}
+            - name: ALLOWED_ORIGINS
+              value: {{ .Values.api.config.allowedOrigins }}
+            - name: DEBUG
+              value: "{{ .Values.api.config.debug }}"
+            - name: PRODUCTION
+              value: "{{ .Values.api.config.production }}"
+            - name: DB_HOST
+              value: postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api-secret
+                  key: SECRET_KEY
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api-secret
+                  key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api-secret
+                  key: DB_NAME
+            - name: ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api-secret
+                  key: ADMIN_EMAIL
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api-secret
+                  key: ADMIN_PASSWORD
+      restartPolicy: Never
+  backoffLimit: 1
+{{- end -}}

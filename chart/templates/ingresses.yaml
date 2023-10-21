@@ -1,0 +1,69 @@
+{{ if .Values.front.ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-front
+  {{- with .Values.front.ingress.annotations }}
+  annotations:
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ tpl $value $ | quote }}
+    {{- end }}
+  {{- end }}
+spec:
+  rules:
+  {{- if .Values.front.ingress.hosts  }}
+    {{- range .Values.front.ingress.hosts }}
+    - host: {{ tpl . $ }}
+      http:
+        paths:
+          - path: {{ $.Values.front.ingress.path }}
+            pathType: {{ $.Values.front.ingress.pathType }}
+            backend:
+              service:
+                name: {{ $.Release.Name }}-front
+                port:
+                  number: 80
+    {{- end }}
+  {{- end }}
+  {{- with .Values.front.ingress.tls }}
+  tls:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+{{- end }}
+
+---
+{{ if .Values.api.ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-api
+  {{- with .Values.api.ingress.annotations }}
+  annotations:
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ tpl $value $ | quote }}
+    {{- end }}
+  {{- end }}
+spec:
+  rules:
+  {{- if .Values.api.ingress.hosts  }}
+    {{- range .Values.api.ingress.hosts }}
+    - host: {{ tpl . $ }}
+      http:
+        paths:
+          - path: {{ $.Values.api.ingress.path }}
+            pathType: {{ $.Values.api.ingress.pathType }}
+            backend:
+              service:
+                name: {{ $.Release.Name }}-api
+                port:
+                  number: 80
+    {{- end }}
+  {{- end }}
+  {{- with .Values.api.ingress.tls }}
+  tls:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+{{- end }}
+
